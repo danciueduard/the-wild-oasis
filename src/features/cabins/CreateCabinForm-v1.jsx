@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import toast from "react-hot-toast";
+import { toast } from "react-hot-toast";
 
 import Input from "../../ui/Input";
 import Form from "../../ui/Form";
@@ -8,18 +8,17 @@ import FileInput from "../../ui/FileInput";
 import Textarea from "../../ui/Textarea";
 import FormRow from "../../ui/FormRow";
 
-import { createEditCabin } from "../../services/apiCabins";
 import { useForm } from "react-hook-form";
+import { createCabin } from "../../services/apiCabins";
 
 function CreateCabinForm() {
   const { register, handleSubmit, reset, getValues, formState } = useForm();
   const { errors } = formState;
-  console.log(errors);
 
   const queryClient = useQueryClient();
 
   const { mutate, isLoading: isCreating } = useMutation({
-    mutationFn: createEditCabin,
+    mutationFn: createCabin,
     onSuccess: () => {
       toast.success("New cabin successfully created");
       queryClient.invalidateQueries({ queryKey: ["cabins"] });
@@ -49,7 +48,7 @@ function CreateCabinForm() {
         />
       </FormRow>
 
-      <FormRow label="Max Capacity" error={errors?.maxCapacity?.message}>
+      <FormRow label="Maximum capacity" error={errors?.maxCapacity?.message}>
         <Input
           type="number"
           id="maxCapacity"
@@ -58,13 +57,13 @@ function CreateCabinForm() {
             required: "This field is required",
             min: {
               value: 1,
-              message: "Capacity has to be at least 1",
+              message: "Capacity should be at least 1",
             },
           })}
         />
       </FormRow>
 
-      <FormRow label="Regular Price" error={errors?.regularPrice?.message}>
+      <FormRow label="Regular price" error={errors?.regularPrice?.message}>
         <Input
           type="number"
           id="regularPrice"
@@ -73,7 +72,7 @@ function CreateCabinForm() {
             required: "This field is required",
             min: {
               value: 1,
-              message: "Capacity has to be at least 1",
+              message: "Capacity should be at least 1",
             },
           })}
         />
@@ -83,6 +82,7 @@ function CreateCabinForm() {
         <Input
           type="number"
           id="discount"
+          disabled={isCreating}
           defaultValue={0}
           {...register("discount", {
             required: "This field is required",
@@ -94,9 +94,9 @@ function CreateCabinForm() {
       </FormRow>
 
       <FormRow
-        label="Description"
-        error={errors?.description?.message}
+        label="Description for website"
         disabled={isCreating}
+        error={errors?.description?.message}
       >
         <Textarea
           type="number"
@@ -109,11 +109,10 @@ function CreateCabinForm() {
         />
       </FormRow>
 
-      <FormRow label="Image" error={errors?.image?.message}>
+      <FormRow label="Cabin photo">
         <FileInput
           id="image"
           accept="image/*"
-          type="file"
           {...register("image", {
             required: "This field is required",
           })}
