@@ -1,6 +1,8 @@
-# React + Vite
+# The Wild Oasis
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A hotel managing app connected to Supabase that allows the manager to create cabins and manage the clients
+
+> Project used for learning purposes part of the React courses by Jonas Schmedtmann 
 
 Currently, two official plugins are available:
 
